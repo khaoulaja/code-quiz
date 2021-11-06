@@ -4,11 +4,14 @@ var startQuizBtn = document.querySelector(".start-quiz");
 var quizEl = document.querySelector("#quiz-container");
 var questionEl = document.querySelector(".question");
 var resultEl = document.querySelector(".result");
-var correctionEl = document.querySelector(".correction");
+var scoreEl = document.querySelector(".final-score");
+var formEl = document.querySelector("#initials-form");
 var ulEl;
 var timer = 75;
 var i = 0;
-var score = 0;
+var score = 0 ;
+var highscoresArr =[];
+var countQues=0;
 var countdown; 
 var questions =[
     {
@@ -64,20 +67,22 @@ var questions =[
 ];
 
 function CountDown(){
-    timer-- ;
+    
   if(timer < 0){
   clearInterval(countdown);
+  gameOver();
    }
   else{
    timerEl.textContent ="Time: "+timer;
-     
+   timer-- ;  
 }
 }
 
 function nextQuestion(){
+    countQues++;
     if(i<questions.length){
         resultEl.classList.add("hide");
-        questionEl.textContent = questions[i].question;
+        questionEl.textContent = countQues+". "+ questions[i].question;
         var option1=document.getElementsByClassName("option")[0];
         var option2=document.getElementsByClassName("option")[1];
         var option3=document.getElementsByClassName("option")[2];
@@ -90,22 +95,26 @@ function nextQuestion(){
         option3.setAttribute("value",questions[i].options[2]);
         option4.textContent="4. "+questions[i].options[3];
         option4.setAttribute("value",questions[i].options[3]);
-       // quizEl.innerHTML = "<h2>"+questions[i].question +"</h2><ul class='options'><li><button value='"+questions[i].options[0]+"'>1. "+questions[i].options[0]+"</button> </li><li><button value='"+questions[i].options[1]+"'>2. "+questions[i].options[1]+"</button></li><li><button value='"+questions[i].options[2]+"'>3. "+questions[i].options[2]+"</button></li><li><button value='"+questions[i].options[3]+"'>4. "+questions[i].options[3]+"</button></li></ul>";
-         ulEl = document.querySelector(".options");
+        ulEl = document.querySelector(".options");
          }
          else{
-             console.log("game over");
+             gameOver();
+            //  console.log(timer);
+            //  return score=timer;
+             
      }
     
 
 }
 function startQuiz(){
+    accuracy=0;
     countdown = setInterval(CountDown,1000);
     introEl.classList.add("hide");
-    quizEl.classList.remove("hide");
+   setTimeout(function(){
+       quizEl.classList.remove("hide");
+   }, 1000); 
     nextQuestion(questions);
     ulEl.addEventListener("click",checkAnswer);
-    //i++;
 }
 
 function checkAnswer(event){
@@ -121,6 +130,7 @@ function checkAnswer(event){
             iEl.remove();
           }, 1000);
         console.log("correct!");
+        accuracy++;
         score +=10;
         i++;
         nextQuestion();
@@ -134,12 +144,67 @@ function checkAnswer(event){
           }, 1000);
         console.log("wrong!");
         timer-=10;
+        if(timer>0){
         i++;
-        nextQuestion();
+        nextQuestion();}
+        else{
+            
+            gameOver();
+            //score=0;
+        }
     }
-    console.log(score);
-    return score;
+    //console.log(score);
+    //return score = timer;
 }
+ function gameOver(){
+//      if(accuracy==0 || timer<0){
+//          score=0;
+//   }
+    clearInterval(countdown);
+    quizEl.classList.add("hide");
+    scoreEl.textContent = score;
+    resultEl.classList.remove("hide");
+    console.log(accuracy);
+ }
 
+// startQuizBtn.addEventListener("click",startQuiz);
+function saveScore(){
+    var initials = document.querySelector("input[name='initials']").value;
+    var highscoreObj ={
+        name: initials,
+        score: score
+    };
+    highscoresArr.push(highscoreObj);
+    localStorage.setItem("highscore", JSON.stringify(highscoresArr));
+}
+function loadHighscores(){
+    var  localData = localStorage.getItem("highscore");
+    highscoresArr = JSON.parse(localData);
+    if(highscoresArr === null){
+        highscoresArr=[];
+    }
+    
+}
+function listHighscores(){
+var listEl = document.querySelector("#highscores-list");
 
-startQuizBtn.addEventListener("click",startQuiz);
+for (var i = 0; i < highscoresArr.length; i++) {
+    var liEl = document.createElement("li");
+    liEl.textContent = highscoresArr[i].name +" - "+highscoresArr[i].score;
+    listEl.appendChild(liEl);
+    
+}
+}
+function clearHighscores(){
+    localStorage.clear();
+    loadHighscores();
+    var liEl = document.querySelectorAll("#highscores-list li");
+    for (var i = 0; i < liEl.length; i++) {
+        liEl[i].remove();
+        
+    }
+    // liEl.remove("li");
+
+}
+loadHighscores();
+//formEl.addEventListener("submit",saveScore);
