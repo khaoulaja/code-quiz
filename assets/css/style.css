@@ -34,9 +34,7 @@ hr{
     color: #5b2a86;
     font-weight: 400;
 }
-#quiz-container button{
-    font-size: 15px;
-}
+
 .container{
     width: 50%;
     margin: auto;
@@ -54,10 +52,15 @@ hr{
 .visible{
     display: block;
 }
+/* quiz container style */
+#quiz-container button{
+    font-size: 15px;
+}
 .options{
     list-style: none;
     padding: 0;
 }
+/* highscores container style */
 .highscores-container{
     width: 40%;
 }
@@ -72,14 +75,25 @@ hr{
     padding-left: 20px;
     margin: 5px;
 }
-
+/* responsive design */
 @media screen and (max-width:980px) {
     h2{
         font-size: 30px;
     }
     .container{
-        width: 65%;
+        width: 80%;
     }
 }
-@media screen and (max-width:768px) {}
-@media screen and (max-width:575px) {}
+@media screen and (max-width:768px) {
+    h2{
+        font-size: 26px;
+    }
+}
+@media screen and (max-width:575px) {
+    h2{
+        font-size: 22px;
+    }
+    .container{
+        width: 100%;
+    }
+}
