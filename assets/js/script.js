@@ -168,7 +168,7 @@ function startQuiz(){
     nextQuestion(questions);
     ulEl.addEventListener("click",checkAnswer);
 }
-//check whether the answer is correct or wrong
+//check whether the answer is correct or not
 function checkAnswer(event){
     var hrEl = document.createElement("hr");
     var iEl = document.createElement("i");
@@ -225,12 +225,21 @@ function saveScore(){
         score: score
     };
     highscoresArr.push(highscoreObj);
+    sortHighscores();
     localStorage.setItem("highscore", JSON.stringify(highscoresArr));
+}
+//sort highscores by score descending order
+function sortHighscores(){
+    highscoresArr.sort(function (a, b) {
+        return b.score - a.score;
+      });
 }
 // add saved score to the highscores array
 function loadHighscores(){
+    
     var  localData = localStorage.getItem("highscore");
     highscoresArr = JSON.parse(localData);
+    sortHighscores();
     if(highscoresArr === null){
         highscoresArr=[];
     }
