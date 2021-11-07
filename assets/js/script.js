@@ -198,6 +198,7 @@ function checkAnswer(event){
         nextQuestion();
     }
         else{ 
+            
             gameOver();   
         }
     }
@@ -205,6 +206,9 @@ function checkAnswer(event){
 }
 //end the game + stop the timer + display the final score and the form
  function gameOver(){
+     if(score<120){
+        document.querySelector(".result h2").textContent = "Game Over!";
+     }
     clearInterval(countdown);
     quizEl.classList.add("hide");
     scoreEl.textContent = score;
