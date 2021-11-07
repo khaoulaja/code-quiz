@@ -239,11 +239,11 @@ function loadHighscores(){
     
     var  localData = localStorage.getItem("highscore");
     highscoresArr = JSON.parse(localData);
-    sortHighscores();
+    
     if(highscoresArr === null){
         highscoresArr=[];
     }
-    
+    sortHighscores();
 }
 //display saved highscores
 function listHighscores(){
