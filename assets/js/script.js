@@ -21,7 +21,7 @@ var questions =[
     },
     {
         "question": "Which of the following type of variable is visible everywhere in your JavaScript code?",
-        "options": ["global variable","local variable","Both of the above","None of the above."],
+        "options": ["global variable","local variable","Both of the above.","None of the above."],
         "answer":"global variable"
     },
     {
@@ -63,12 +63,63 @@ var questions =[
         "question": "Which built-in method returns the index within the calling String object of the first occurrence of the specified value?",
         "options": ["getIndex()","indexOf()","location()","None of the above"],
         "answer":"indexOf()"
+    },
+    {
+        "question": "Which of the following is correct about the features of JavaScript?",
+        "options": ["JavaScript is is complementary to and integrated with HTML.","JavaScript is open and cross-platform.","Both of the above.","None of the above."],
+        "answer":"Both of the above."
+    },
+    {
+        "question": "Which of these values is NOT considered false?",
+        "options": ['0','"0"','null','""'],
+        "answer":'"0"'
+    },
+    {
+        "question": "Which built-in method returns the string representation of the number's value?",
+        "options": ["ToValue()","ToNumber()","ToString()","None of the above."],
+        "answer":"ToString()"
+    },
+    {
+        "question": "A Function Associated With An object is Called",
+        "options": ["Link","Function","Method","None"],
+        "answer":"Method"
+    },
+    {
+        "question": "Function is Used To Parse a String To Int:",
+        "options": ["Int.Parse","Parse.Int","Integer.Parse","None"],
+        "answer":"Int.Parse"
+    },
+    {
+        "question": "If Button is clicked ______ Event Handler is invoked.",
+        "options": ["OnSubmit()","OnLoad()","IsPostBack()","Onclick()"],
+        "answer":"Onclick()"
+    },
+    {
+        "question": "IsNaN() Evaluates And Argument To Determine if Given Value:",
+        "options": ["Is Not a Null","Is Not a New Object","Is Not a Number","None Of The Above."],
+        "answer":"Is Not a Number"
+    },
+    {
+        "question": "Method Prompt() Contain ____ Number of Parameters.",
+        "options": ["One","Two","Three","Zero"],
+        "answer":"Two"
+    },
+    {
+        "question": "JavaScript File Has An Extension of:",
+        "options": [".Java",".javascript",".xml",".Js"],
+        "answer":".Js"
+    },
+    {
+        "question": "GetMonth() returns The Month as:",
+        "options": ["Int","Char","String","Float"],
+        "answer":"Int"
     }
 ];
-
+//dislay the time left
 function CountDown(){
     
   if(timer < 0){
+//if timer reaches 0 stop the countdown      
   clearInterval(countdown);
   gameOver();
    }
@@ -77,16 +128,20 @@ function CountDown(){
    timer-- ;  
 }
 }
-
+//display the next question
 function nextQuestion(){
+    // question number
     countQues++;
     if(i<questions.length){
+        //hide the intro div
         resultEl.classList.add("hide");
+        //show the question
         questionEl.textContent = countQues+". "+ questions[i].question;
         var option1=document.getElementsByClassName("option")[0];
         var option2=document.getElementsByClassName("option")[1];
         var option3=document.getElementsByClassName("option")[2];
         var option4=document.getElementsByClassName("option")[3];
+        //list the options
         option1.textContent="1. "+questions[i].options[0];
         option1.setAttribute("value",questions[i].options[0]);
         option2.textContent="2. "+questions[i].options[1];
@@ -97,26 +152,23 @@ function nextQuestion(){
         option4.setAttribute("value",questions[i].options[3]);
         ulEl = document.querySelector(".options");
          }
-         else{
-             gameOver();
-            //  console.log(timer);
-            //  return score=timer;
-             
+    else{
+        gameOver();
      }
     
-
 }
+// start the test function
 function startQuiz(){
-    accuracy=0;
     countdown = setInterval(CountDown,1000);
     introEl.classList.add("hide");
+    //display quiz div after 1s so this latter and the timer could start at the same time
    setTimeout(function(){
        quizEl.classList.remove("hide");
    }, 1000); 
     nextQuestion(questions);
     ulEl.addEventListener("click",checkAnswer);
 }
-
+//check whether the answer is correct or wrong
 function checkAnswer(event){
     var hrEl = document.createElement("hr");
     var iEl = document.createElement("i");
@@ -129,8 +181,6 @@ function checkAnswer(event){
             hrEl.remove();
             iEl.remove();
           }, 1000);
-        console.log("correct!");
-        accuracy++;
         score +=10;
         i++;
         nextQuestion();
@@ -142,34 +192,30 @@ function checkAnswer(event){
             hrEl.remove();
             iEl.remove();
           }, 1000);
-        console.log("wrong!");
         timer-=10;
         if(timer>0){
         i++;
-        nextQuestion();}
-        else{
-            
-            gameOver();
-            //score=0;
+        nextQuestion();
+    }
+        else{ 
+            gameOver();   
         }
     }
-    //console.log(score);
-    //return score = timer;
+   
 }
+//end the game + stop the timer + display the final score and the form
  function gameOver(){
-//      if(accuracy==0 || timer<0){
-//          score=0;
-//   }
     clearInterval(countdown);
     quizEl.classList.add("hide");
     scoreEl.textContent = score;
     resultEl.classList.remove("hide");
-    console.log(accuracy);
  }
-
-// startQuizBtn.addEventListener("click",startQuiz);
+//save score to the local storage
 function saveScore(){
     var initials = document.querySelector("input[name='initials']").value;
+    if(initials == ""){
+        initials="Anonymous";
+    }
     var highscoreObj ={
         name: initials,
         score: score
@@ -177,6 +223,7 @@ function saveScore(){
     highscoresArr.push(highscoreObj);
     localStorage.setItem("highscore", JSON.stringify(highscoresArr));
 }
+// add saved score to the highscores array
 function loadHighscores(){
     var  localData = localStorage.getItem("highscore");
     highscoresArr = JSON.parse(localData);
@@ -185,6 +232,7 @@ function loadHighscores(){
     }
     
 }
+//display saved highscores
 function listHighscores(){
 var listEl = document.querySelector("#highscores-list");
 
@@ -195,6 +243,7 @@ for (var i = 0; i < highscoresArr.length; i++) {
     
 }
 }
+//delete local storage
 function clearHighscores(){
     localStorage.clear();
     loadHighscores();
@@ -203,8 +252,8 @@ function clearHighscores(){
         liEl[i].remove();
         
     }
-    // liEl.remove("li");
+
 
 }
+
 loadHighscores();
-//formEl.addEventListener("submit",saveScore);

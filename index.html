@@ -9,17 +9,18 @@
 </head>
 <body>
    <div class="header">
-<a href="/highscores.html">View Highscores</a>
-<h3 class="timer">Time: 0</h3>
+      <a href="/highscores.html">View Highscores</a>
+      <h3 class="timer">Time: 0</h3>
    </div> 
+   <!-- quiz intro div -->
    <div class="center container intro">
-<h2>Coding Quiz Challenge</h2>
-<p>Try to answer the following code-related questions within the time limit. <br> Keep in mind that incorrect answers will penalize your scoreTime by ten seconds!</p>
-<button class="start-quiz" onclick="startQuiz()">Start Quiz</button>
+      <h2>Coding Quiz Challenge</h2>
+      <p>Try to answer the following code-related questions within the time limit. <br> Keep in mind that incorrect answers will penalize your scoreTime by ten seconds!</p>
+      <button class="start-quiz" onclick="startQuiz()">Start Quiz</button>
    </div>
+   <!-- hidden questions div -->
    <div id="quiz-container" class="container hide ">
       <h2 class="question"></h2>
-      
       <ul class="options">
          <li><button class="option"></button></li>
          <li><button class="option"></button></li>
@@ -28,15 +29,17 @@
       </ul>
 
    </div>
+   <!-- hidden initials form -->
    <div class="center container result hide">
       <h2>All Done!</h2>
       <p>Your final score is : <span class="final-score"></span>.</p>
-      <form action="/highscores.html" id="initials-form">
+      <form action="/highscores.html" id="initials-form" onsubmit="return saveScore()">
         <label for="initials">Enter initials : </label>
         <input type="text" name="initials"> 
-        <button onclick="saveScore()">Submit</button>
+        <button type="submit" >Submit</button>
       </form>
    </div>
+   <!-- link js file -->
    <script src="./assets/js/script.js"></script>
 </body>
 </html>
